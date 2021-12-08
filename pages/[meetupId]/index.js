@@ -2,7 +2,17 @@ import MeetUpDetail from "../../components/meetups/MeetUpDetail";
 import { MongoClient, ObjectId } from "mongodb";
 import Head from "next/head";
 
-const MeetUpDetails = ({ meetupData }) => {
+const MeetUpDetails = ({
+  meetupData = {
+    _id: "61b0e002066ad37feed85fc1",
+    title: "桃園之旅",
+    image:
+      "https://images.unsplash.com/photo-1638569763060-32073547bbe5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+    address: "台北市中山區",
+    description: "到底有沒有成功",
+    id: "61b0e002066ad37feed85fc1",
+  },
+}) => {
   return (
     <>
       <Head>
