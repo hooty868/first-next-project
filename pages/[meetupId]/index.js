@@ -29,30 +29,49 @@ const MeetUpDetails = ({
   );
 };
 
-export async function getStaticPaths() {
-  const client = await MongoClient.connect(
-    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
-  );
-  const db = client.db();
-  const meetupsCollection = db.collection("meetups");
-  const data = await meetupsCollection.find({}, { _id: 1 }).toArray();
+// export async function getStaticPaths() {
+//   const client = await MongoClient.connect(
+//     "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
+//   );
+//   const db = client.db();
+//   const meetupsCollection = db.collection("meetups");
+//   const data = await meetupsCollection.find({}, { _id: 1 }).toArray();
 
-  client.close();
-  return {
-    fallback: true,
-    paths: data.map((meet) => ({ params: { meetupId: meet._id.toString() } })),
-  };
-}
+//   client.close();
+//   return {
+//     fallback: "blocking",
+//     paths: data.map((meet) => ({ params: { meetupId: meet._id.toString() } })),
+//   };
+// }
 
-export async function getStaticProps(context) {
-  const meetUpId = context.params.meetupId;
+// export async function getStaticProps(context) {
+//   const meetUpId = context.params.meetupId;
+//   const client = await MongoClient.connect(
+//     "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
+//   );
+//   const db = client.db();
+//   const meetupsCollection = db.collection("meetups");
+//   const data = await meetupsCollection.findOne({ _id: ObjectId(meetUpId) });
+
+//   client.close();
+//   return {
+//     props: {
+//       meetupData: {
+//         ...data,
+//         _id: data._id.toString(),
+//         id: data._id.toString(),
+//       },
+//     },
+//   };
+// }
+
+export async function getServerSideProps(context) {
   const client = await MongoClient.connect(
     "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
   );
   const db = client.db();
   const meetupsCollection = db.collection("meetups");
   const data = await meetupsCollection.findOne({ _id: ObjectId(meetUpId) });
-
   client.close();
   return {
     props: {
