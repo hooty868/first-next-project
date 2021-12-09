@@ -66,6 +66,7 @@ const MeetUpDetails = ({
 // }
 
 export async function getServerSideProps(context) {
+  const meetUpId = context.params.meetupId;
   const client = await MongoClient.connect(
     "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
   );
