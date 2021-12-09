@@ -36,24 +36,7 @@ const HomePage = (props) => {
   );
 };
 
-// export async function getServerSideProps(context) {
-//   const client = await MongoClient.connect(
-//     "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
-//   );
-//   const db = client.db();
-//   const meetupsCollection = db.collection("meetups");
-//   const data = await meetupsCollection.find().toArray();
-//   client.close();
-//   return {
-//     props: {
-//       meetups: data.map((item) => {
-//         return { ...item, _id: item._id.toString(), id: item._id.toString() };
-//       }),
-//     },
-//   };
-// }
-
-export async function getStaticProps() {
+export async function getServerSideProps(context) {
   const client = await MongoClient.connect(
     "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
   );
@@ -67,8 +50,25 @@ export async function getStaticProps() {
         return { ...item, _id: item._id.toString(), id: item._id.toString() };
       }),
     },
-    revalidate: 3600,
   };
 }
+
+// export async function getStaticProps() {
+//   const client = await MongoClient.connect(
+//     "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
+//   );
+//   const db = client.db();
+//   const meetupsCollection = db.collection("meetups");
+//   const data = await meetupsCollection.find().toArray();
+//   client.close();
+//   return {
+//     props: {
+//       meetups: data.map((item) => {
+//         return { ...item, _id: item._id.toString(), id: item._id.toString() };
+//       }),
+//     },
+//     revalidate: 3600,
+//   };
+// }
 
 export default HomePage;
