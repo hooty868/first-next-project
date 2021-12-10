@@ -44,28 +44,7 @@ const MeetUpDetails = ({
 //   };
 // }
 
-// export async function getStaticProps(context) {
-//   const meetUpId = context.params.meetupId;
-//   const client = await MongoClient.connect(
-//     "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
-//   );
-//   const db = client.db();
-//   const meetupsCollection = db.collection("meetups");
-//   const data = await meetupsCollection.findOne({ _id: ObjectId(meetUpId) });
-
-//   client.close();
-//   return {
-//     props: {
-//       meetupData: {
-//         ...data,
-//         _id: data._id.toString(),
-//         id: data._id.toString(),
-//       },
-//     },
-//   };
-// }
-
-export async function getServerSideProps(context) {
+export async function getStaticProps(context) {
   const meetUpId = context.params.meetupId;
   const client = await MongoClient.connect(
     "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
@@ -73,6 +52,7 @@ export async function getServerSideProps(context) {
   const db = client.db();
   const meetupsCollection = db.collection("meetups");
   const data = await meetupsCollection.findOne({ _id: ObjectId(meetUpId) });
+
   client.close();
   return {
     props: {
@@ -84,5 +64,25 @@ export async function getServerSideProps(context) {
     },
   };
 }
+
+// export async function getServerSideProps(context) {
+//   const meetUpId = context.params.meetupId;
+//   const client = await MongoClient.connect(
+//     "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
+//   );
+//   const db = client.db();
+//   const meetupsCollection = db.collection("meetups");
+//   const data = await meetupsCollection.findOne({ _id: ObjectId(meetUpId) });
+//   client.close();
+//   return {
+//     props: {
+//       meetupData: {
+//         ...data,
+//         _id: data._id.toString(),
+//         id: data._id.toString(),
+//       },
+//     },
+//   };
+// }
 
 export default MeetUpDetails;
