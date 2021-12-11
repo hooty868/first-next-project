@@ -66,6 +66,8 @@ const MeetUpDetails = ({
 // }
 
 export async function getServerSideProps(context) {
+  const { res } = context;
+  res.setHeader("Cache-Control", `s-maxage=60, stale-while-revalidate`);
   const meetUpId = context.params.meetupId;
   const client = await MongoClient.connect(
     "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
