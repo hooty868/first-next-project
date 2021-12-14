@@ -3,37 +3,76 @@
   height: 5rem;
   display: flex;
   align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  padding: 1.5rem 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1170px;
+  display: flex;
+  align-items: center;
   justify-content: space-between;
-  background-color: #77002e;
-  padding: 0 10%;
+  @media (min-width: 1200px) {
+    padding: 10px 20px;
+  }
 }
 
 .logo {
-  font-size: 2rem;
-  color: white;
-  font-weight: bold;
+  width: 30%;
+  font-size: 1.5rem;
+  color: #3e444e;
+  font-weight: 300;
+  padding-left: 16px;
+}
+
+.header nav {
+  width: 60%;
+  padding-right: 10px;
 }
 
 .header ul {
   list-style: none;
   margin: 0;
   padding: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 100%;
   display: flex;
-  align-items: baseline;
+  flex-wrap: nowrap;
 }
 
 .header li {
-  margin-left: 3rem;
+  padding: 0 10px;
+  background-color: #dfdfdf;
+}
+
+@media (min-width: 1200px) {
+  .header li {
+    padding: 16px 24px;
+  }
 }
 
 .header a {
+  height: 100%;
   text-decoration: none;
-  font-size: 1.5rem;
-  color: #fcb8d2;
+  font-size: 1rem;
+  color: #3e444e;
+}
+
+@media (min-width: 1200px) {
+  .header a {
+    height: 100%;
+    text-decoration: none;
+    font-size: 1.2rem;
+    color: #3e444e;
+  }
 }
 
 .header a:hover,
 .header a:active,
 .header a.active {
-  color: white;
+  opacity: 0.3;
+  transition: opacity 0.3s;
 }

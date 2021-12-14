@@ -1,5 +1,14 @@
 .card {
   background-color: white;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgb(155 162 189 / 25%);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .card {
+    width: 110%;
+  }
 }
