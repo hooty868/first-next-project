@@ -36,7 +36,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: hidden;
   height: 100%;
   display: flex;
@@ -45,7 +45,6 @@
 
 .header li {
   padding: 0 10px;
-  background-color: #dfdfdf;
 }
 
 @media (min-width: 1200px) {
