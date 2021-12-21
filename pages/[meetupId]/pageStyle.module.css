@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  justify-content: center;
+  background: #fff;
+}
+.containerContent {
+  display: flex;
+  max-width: 1000px;
+}
+.containerAside {
+  flex: 0.6;
+  padding-left: 30px;
+}
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  width: "100%";
+}
+
+@media (max-width: 1200px) {
+  .containerAside {
+    display: none;
+  }
+}

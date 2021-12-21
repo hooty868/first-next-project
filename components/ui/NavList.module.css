@@ -1,0 +1,46 @@
+.navList {
+  display: block;
+  background: #fff;
+  width: 100%;
+  max-width: 500px;
+  padding: 20px 10px;
+  color: #3e444e;
+  margin: 20px 0;
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgb(155 162 189 / 25%);
+}
+.navList font {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #9ca3b8;
+  margin-bottom: 20px;
+}
+.navList li {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #3e444e;
+  margin-bottom: 20px;
+}
+.navList div {
+  width: "10%";
+}
+.highLight {
+  width: 6px;
+  height: 6px;
+  background: #4364af;
+  border-radius: 3px;
+  margin-right: 10px;
+}
+.navList li p {
+  width: "90%";
+  display: block;
+}
+
+@media (max-width: 1200px) {
+  .navList {
+    display: none;
+  }
+}

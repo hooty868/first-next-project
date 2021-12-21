@@ -1,7 +1,10 @@
 import MeetUpDetail from "../../components/meetups/MeetUpDetail";
+import classes from "./pageStyle.module.css";
 import { MongoClient, ObjectId } from "mongodb";
 import Head from "next/head";
-
+import NavList from "../../components/ui/NavList";
+import Link from "next/link";
+import RecommandCard from "../../components/ui/RecommandCard";
 const MeetUpDetails = ({
   meetupData = {
     _id: "61b0e002066ad37feed85fc1",
@@ -19,12 +22,45 @@ const MeetUpDetails = ({
         <title>{meetupData.title}</title>
         <meta name="description" content={meetupData.description}></meta>
       </Head>
-      <MeetUpDetail
-        image={meetupData.image}
-        title={meetupData.title}
-        address={meetupData.address}
-        description={meetupData.description}
-      />
+      <div className={classes.container}>
+        <div className={classes.containerContent}>
+          <MeetUpDetail
+            articleId={meetupData._id}
+            image={meetupData.image}
+            title={meetupData.title}
+            address={meetupData.address}
+            description={meetupData.description}
+          />
+          <aside className={classes.containerAside}>
+            <NavList articleId={meetupData._id} />
+            <div className={classes.cardContainer}>
+              <div
+                style={{
+                  width: "100%",
+                  height: 64,
+                  background: "#000",
+                  borderRadius: 10,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <h2
+                  style={{
+                    color: "#fff",
+                    fontSize: 24,
+                  }}
+                >
+                  推薦閱讀
+                </h2>
+              </div>
+              {["1", "2", "3", "4", "5"].map((e) => {
+                return <RecommandCard key={e} imageSrc={meetupData.image} />;
+              })}
+            </div>
+          </aside>
+        </div>
+      </div>
     </>
   );
 };
