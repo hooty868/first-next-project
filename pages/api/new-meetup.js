@@ -8,7 +8,7 @@ async function handler(req, res) {
       "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
     );
     const db = client.db();
-    const meetupsCollection = db.collection("meetups");
+    const meetupsCollection = db.collection("articles");
     const result = await meetupsCollection.insertOne(newData);
     console.log(result);
     client.close();

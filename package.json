@@ -9,11 +9,20 @@
     "local": "next start"
   },
   "dependencies": {
+    "aws-sdk": "^2.1048.0",
+    "axios": "^0.24.0",
+    "dotenv": "^10.0.0",
+    "file-saver": "^2.0.5",
+    "formidable-serverless": "^1.1.1",
+    "fs": "*",
     "mongodb": "^4.2.1",
     "next": "10.0.6",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "sharp": "^0.26.3"
+    "request-promise": "^4.2.6",
+    "sharp": "^0.26.3",
+    "unsplash-js": "^6.0.0",
+    "uuid": "^8.3.2"
   },
   "cacheDirectories": [
     ".next/cache"

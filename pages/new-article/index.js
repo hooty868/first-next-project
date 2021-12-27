@@ -4,15 +4,8 @@ import { useRouter } from "next/router";
 const newMeetupPage = () => {
   const [pageItem, setPageItem] = useState(0);
   const router = useRouter();
-
-  const addMeetupHandler = async (meetUp) => {
-    const response = await fetch("/api/new-meetup", {
-      method: "POST",
-      body: JSON.stringify(meetUp),
-      headers: { "Content-Type": "application/json" },
-    });
-    const data = await response.json();
-    router.push("/");
+  const backRouter = () => {
+    router.push(`/new-article/edit`);
   };
   const addPaginatorHandler = () => {
     setPageItem((v) => v + 10);
@@ -50,8 +43,9 @@ const newMeetupPage = () => {
               fontSize: 25,
               textAlign: "center",
               lineHeight: "50px",
-              background: "#000",
-              color: "#fff",
+              color: "#000",
+              borderRadius: 10,
+              border: "1px solid #000",
             }}
           >
             上一頁
@@ -65,8 +59,9 @@ const newMeetupPage = () => {
             fontSize: 25,
             textAlign: "center",
             lineHeight: "50px",
-            background: "#000",
-            color: "#fff",
+            color: "#000",
+            borderRadius: 10,
+            border: "1px solid #000",
           }}
         >
           表格
@@ -79,13 +74,15 @@ const newMeetupPage = () => {
             fontSize: 25,
             textAlign: "center",
             lineHeight: "50px",
-            background: "#000",
-            color: "#fff",
+            color: "#000",
+            borderRadius: 10,
+            border: "1px solid #000",
           }}
         >
           分析
         </div>
         <div
+          onClick={backRouter}
           style={{
             width: "100%",
             height: 50,
@@ -93,8 +90,9 @@ const newMeetupPage = () => {
             fontSize: 25,
             textAlign: "center",
             lineHeight: "50px",
-            background: "#000",
-            color: "#fff",
+            color: "#000",
+            borderRadius: 10,
+            border: "1px solid #000",
           }}
         >
           插入新文章
@@ -108,8 +106,9 @@ const newMeetupPage = () => {
             fontSize: 25,
             textAlign: "center",
             lineHeight: "50px",
-            background: "#000",
-            color: "#fff",
+            color: "#000",
+            borderRadius: 10,
+            border: "1px solid #000",
           }}
         >
           下一頁
