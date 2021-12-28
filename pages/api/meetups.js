@@ -1,9 +1,5 @@
 import { MongoClient } from "mongodb";
 
-const request = require("request-promise");
-const AWS = require("aws-sdk");
-const s3 = new AWS.S3();
-
 async function handler(req, res) {
   if (req.method === "GET") {
     const client = await MongoClient.connect(

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
 import Unsplash, { toJson } from "unsplash-js";
-const AWS = require("aws-sdk");
+import { saveAs } from "file-saver";
 
 const unsplash = new Unsplash({
   accessKey: "HEoGdIgyY17NjcjylHQMh-1Z7hmdTTV8lZ10r02hPcA",
@@ -51,7 +51,7 @@ const newMeetupPage = () => {
 
   const getPhotos = (searchText, index) => {
     unsplash.search
-      .photos(searchText, 1, 30)
+      .photos(searchText, 1, 20)
       .then(toJson)
       .then((json) => {
         if (index === 1) {
@@ -128,10 +128,8 @@ const newMeetupPage = () => {
 
       setCoverImage(url);
     }
-
     return (
       <>
-        <p>Upload a .png or .jpg image (max 1MB).</p>
         <input
           onChange={handleProfileImageUpload}
           type="file"
@@ -139,6 +137,10 @@ const newMeetupPage = () => {
         />
       </>
     );
+  };
+  const saveFile = (url) => {
+    saveAs(url, "cover.jpg");
+    setPhotos([]);
   };
 
   return (
@@ -193,7 +195,6 @@ const newMeetupPage = () => {
         >
           提交文章
         </div>
-        <Upload />
       </div>
       <div
         style={{
@@ -411,6 +412,7 @@ const newMeetupPage = () => {
               >
                 取得照片(unsplash)
               </p>
+              <Upload />
               {coverImage && (
                 <img
                   style={{ width: 200, height: 100 }}
@@ -441,8 +443,15 @@ const newMeetupPage = () => {
                     <img
                       uri={urls.small}
                       alt={alt_description}
-                      style={{ width: 400, height: 300 }}
+                      style={{ width: 40, height: 40 }}
                     />
+                    <button
+                      className="cv"
+                      onClick={saveFile.bind(null, urls.small)}
+                    >
+                      Download File
+                    </button>
+                    ;
                   </div>
                 );
               })}
@@ -617,7 +626,7 @@ const newMeetupPage = () => {
                         setSecondImage(item);
                       }}
                     />
-                    <Index img_uri={urls.small} img_alt={`second_image.jpg`} />
+                    {/* <Index img_uri={urls.small} img_alt={`second_image.jpg`} /> */}
                   </div>
                 );
               })}
@@ -707,7 +716,7 @@ const newMeetupPage = () => {
                         setThirdImage(item);
                       }}
                     />
-                    <Index img_uri={urls.small} img_alt={`third_image.jpg`} />
+                    {/* <Index img_uri={urls.small} img_alt={`third_image.jpg`} /> */}
                   </div>
                 );
               })}
@@ -808,4 +817,5 @@ const newMeetupPage = () => {
     </div>
   );
 };
+
 export default newMeetupPage;

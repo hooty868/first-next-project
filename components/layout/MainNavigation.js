@@ -19,15 +19,6 @@ function MainNavigation() {
             <li>
               <Link href="/">人生</Link>
             </li>
-            <li>
-              <Link href="/">娛樂</Link>
-            </li>
-            <li>
-              <Link href="/">時事</Link>
-            </li>
-            <li>
-              <Link href="/">購物</Link>
-            </li>
           </ul>
         </nav>
       </div>

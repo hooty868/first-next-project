@@ -6,7 +6,7 @@ const HomePage = (props) => {
   return (
     <>
       <Head>
-        <title>React Meetups</title>
+        <title>解密之書</title>
         <meta
           name="description"
           content="a example for next project,and very useful"
