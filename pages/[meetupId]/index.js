@@ -67,7 +67,7 @@ const MeetUpDetails = ({
 
 // export async function getStaticPaths() {
 //   const client = await MongoClient.connect(
-//     "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
+//     "process.env.MONGODB_URL"
 //   );
 //   const db = client.db();
 //   const meetupsCollection = db.collection("meetups");
@@ -83,7 +83,7 @@ const MeetUpDetails = ({
 // export async function getStaticProps(context) {
 //   const meetUpId = context.params.meetupId;
 //   const client = await MongoClient.connect(
-//     "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
+//     process.env.MONGODB_URL"
 //   );
 //   const db = client.db();
 //   const meetupsCollection = db.collection("meetups");
@@ -105,9 +105,7 @@ export async function getServerSideProps(context) {
   const { res } = context;
   res.setHeader("Cache-Control", "s-maxage=86400", "stale-while-revalidate");
   const meetUpId = context.params.meetupId;
-  const client = await MongoClient.connect(
-    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
-  );
+  const client = await MongoClient.connect(process.env.MONGODB_URL);
   const db = client.db();
   const meetupsCollection = db.collection("meetups");
   const data = await meetupsCollection.findOne({ _id: ObjectId(meetUpId) });
