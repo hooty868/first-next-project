@@ -7,7 +7,7 @@ async function handler(req, res) {
     const meetupsCollection = db.collection("meetups");
     const data = await meetupsCollection.find().toArray();
     client.close();
-    // console.log(data);
+
     return {
       meetups: {
         meetups: data.map((item) => {

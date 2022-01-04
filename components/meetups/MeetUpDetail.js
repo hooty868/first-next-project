@@ -198,8 +198,7 @@ const MeetUpDetail = (props) => {
                     </p>
                   </div>
                   <div className={classes.footer}>
-                    <p>Marc Belgrave</p>
-                    <p>9 min read</p>
+                    <span>Marc Belgrave</span>
                   </div>
                 </div>
               </Card>
