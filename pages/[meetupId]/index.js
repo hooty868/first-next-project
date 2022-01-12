@@ -83,7 +83,7 @@ const MeetUpDetails = ({
 // export async function getStaticProps(context) {
 //   const meetUpId = context.params.meetupId;
 //   const client = await MongoClient.connect(
-//     process.env.MONGODB_URL"
+//     "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
 //   );
 //   const db = client.db();
 //   const meetupsCollection = db.collection("meetups");
@@ -102,14 +102,27 @@ const MeetUpDetails = ({
 // }
 
 export async function getServerSideProps(context) {
+  let cachedDb = null;
   const { res } = context;
   res.setHeader("Cache-Control", "s-maxage=86400", "stale-while-revalidate");
   const meetUpId = context.params.meetupId;
-  const client = await MongoClient.connect(process.env.MONGODB_URL);
-  const db = client.db();
+
+  async function connectToDatabase(uri) {
+    if (cachedDb) {
+      return cachedDb; // Prefer cached connection
+    }
+    const client = await MongoClient.connect(uri);
+    const db = client.db();
+    cachedDb = db; // Cache the database connection
+    return db;
+  }
+
+  const db = await connectToDatabase(
+    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
+  );
   const meetupsCollection = db.collection("meetups");
   const data = await meetupsCollection.findOne({ _id: ObjectId(meetUpId) });
-  client.close();
+
   return {
     props: {
       meetupData: {

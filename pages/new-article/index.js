@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import { MongoClient } from "mongodb";
+import Link from "next/link";
 
-const newMeetupPage = () => {
+const newMeetupPage = (props) => {
   const [pageItem, setPageItem] = useState(0);
   const router = useRouter();
   const backRouter = () => {
@@ -12,6 +14,15 @@ const newMeetupPage = () => {
   };
   const minusPaginatorHandler = () => {
     setPageItem((v) => v - 10);
+  };
+  const deleteHandler = async (id) => {
+    const response = await fetch("/api/deleteArticle", {
+      method: "DELETE",
+      body: JSON.stringify({ id }),
+      headers: { "Content-Type": "application/json" },
+    });
+    const data = response.json({ message: "delete article" });
+    router.push(`/new-article`);
   };
 
   return (
@@ -131,278 +142,308 @@ const newMeetupPage = () => {
         >
           文章列表
         </h1>
-        <thead
+        <table
           style={{
             height: "100%",
             width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            color: "#000",
           }}
         >
-          <tr
+          <thead
             style={{
+              height: "100%",
               width: "100%",
-              height: 50,
               display: "flex",
+              flexDirection: "column",
+              color: "#000",
             }}
           >
-            <th
+            <tr
               style={{
-                width: "7.5%",
-                border: "1.5px solid #000",
-                textAlign: "center",
-                lineHeight: "50px",
+                width: "100%",
+                height: 50,
+                display: "flex",
               }}
             >
-              時間
-            </th>
-            <th
-              style={{
-                width: "5%",
-                border: "1.5px solid #000",
-                textAlign: "center",
-                lineHeight: "50px",
-              }}
-            >
-              狀態
-            </th>
-            <th
-              style={{
-                width: "5%",
-                border: "1.5px solid #000",
-                textAlign: "center",
-                lineHeight: "50px",
-              }}
-            >
-              分類
-            </th>
-            <th
-              style={{
-                width: "5%",
-                border: "1.5px solid #000",
-                textAlign: "center",
-                lineHeight: "50px",
-              }}
-            >
-              作者姓名
-            </th>
-            <th
-              style={{
-                width: "5%",
-                border: "1.5px solid #000",
-                textAlign: "center",
-                lineHeight: "50px",
-              }}
-            >
-              作者圖片
-            </th>
-            <th
-              style={{
-                width: "2.5%",
-                border: "1.5px solid #000",
-                textAlign: "center",
-                lineHeight: "50px",
-              }}
-            >
-              閱讀
-            </th>
-            <th
-              style={{
-                width: "25%",
-                border: "1.5px solid #000",
-                textAlign: "center",
-                lineHeight: "50px",
-              }}
-            >
-              標題
-            </th>
-            <th
-              style={{
-                width: "37.5%",
-                border: "1.5px solid #000",
-                textAlign: "center",
-                lineHeight: "50px",
-              }}
-            >
-              摘要
-            </th>
-            <th
-              style={{
-                width: "2.5%",
-                border: "1.5px solid #000",
-                textAlign: "center",
-                lineHeight: "50px",
-              }}
-            >
-              預覽
-            </th>
-            <th
-              style={{
-                width: "2.5%",
-                border: "1.5px solid #000",
-                textAlign: "center",
-                lineHeight: "50px",
-              }}
-            >
-              修改
-            </th>
-            <th
-              style={{
-                width: "2.5%",
-                border: "1.5px solid #000",
-                textAlign: "center",
-                lineHeight: "50px",
-              }}
-            >
-              刪除
-            </th>
-          </tr>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((e) => {
-            return (
-              <tr
-                key={e.toString()}
+              <th
                 style={{
-                  width: "100%",
-                  height: 50,
-                  display: "flex",
+                  width: "7.5%",
+                  border: "1.5px solid #000",
+                  textAlign: "center",
+                  lineHeight: "50px",
                 }}
               >
-                <th
+                時間
+              </th>
+              <th
+                style={{
+                  width: "2.5%",
+                  border: "1.5px solid #000",
+                  textAlign: "center",
+                  lineHeight: "50px",
+                }}
+              >
+                狀態
+              </th>
+              <th
+                style={{
+                  width: "5%",
+                  border: "1.5px solid #000",
+                  textAlign: "center",
+                  lineHeight: "50px",
+                }}
+              >
+                分類
+              </th>
+              <th
+                style={{
+                  width: "5%",
+                  border: "1.5px solid #000",
+                  textAlign: "center",
+                  lineHeight: "50px",
+                }}
+              >
+                作者姓名
+              </th>
+              <th
+                style={{
+                  width: "5%",
+                  border: "1.5px solid #000",
+                  textAlign: "center",
+                  lineHeight: "50px",
+                }}
+              >
+                作者圖片
+              </th>
+              <th
+                style={{
+                  width: "2.5%",
+                  border: "1.5px solid #000",
+                  textAlign: "center",
+                  lineHeight: "50px",
+                }}
+              >
+                閱讀
+              </th>
+              <th
+                style={{
+                  width: "25%",
+                  border: "1.5px solid #000",
+                  textAlign: "center",
+                  lineHeight: "50px",
+                }}
+              >
+                標題
+              </th>
+              <th
+                style={{
+                  width: "40%",
+                  border: "1.5px solid #000",
+                  textAlign: "center",
+                  lineHeight: "50px",
+                }}
+              >
+                摘要
+              </th>
+              <th
+                style={{
+                  width: "2.5%",
+                  border: "1.5px solid #000",
+                  textAlign: "center",
+                  lineHeight: "50px",
+                }}
+              >
+                預覽
+              </th>
+              <th
+                style={{
+                  width: "2.5%",
+                  border: "1.5px solid #000",
+                  textAlign: "center",
+                  lineHeight: "50px",
+                }}
+              >
+                修改
+              </th>
+              <th
+                style={{
+                  width: "2.5%",
+                  border: "1.5px solid #000",
+                  textAlign: "center",
+                  lineHeight: "50px",
+                }}
+              >
+                刪除
+              </th>
+            </tr>
+            {props.articles.map((e) => {
+              return (
+                <tr
+                  key={e.id.toString()}
                   style={{
-                    width: "7.5%",
-                    border: "1.5px solid #000",
-                    textAlign: "center",
-                    lineHeight: "50px",
+                    width: "100%",
+                    height: 50,
+                    display: "flex",
                   }}
                 >
-                  時間
-                </th>
-                <th
-                  style={{
-                    width: "5%",
-                    border: "1.5px solid #000",
-                    textAlign: "center",
-                    lineHeight: "50px",
-                  }}
-                >
-                  狀態
-                </th>
-                <th
-                  style={{
-                    width: "5%",
-                    border: "1.5px solid #000",
-                    textAlign: "center",
-                    lineHeight: "50px",
-                  }}
-                >
-                  分類
-                </th>
-                <th
-                  style={{
-                    width: "5%",
-                    border: "1.5px solid #000",
-                    textAlign: "center",
-                    lineHeight: "50px",
-                  }}
-                >
-                  作者姓名
-                </th>
-                <th
-                  style={{
-                    width: "5%",
-                    border: "1.5px solid #000",
-                    textAlign: "center",
-                    lineHeight: "50px",
-                  }}
-                >
-                  <img
-                    src="/icon/edit.png"
-                    alt="Edit"
-                    style={{ width: 35, height: 35 }}
-                  />
-                </th>
-                <th
-                  style={{
-                    width: "2.5%",
-                    border: "1.5px solid #000",
-                    textAlign: "center",
-                    lineHeight: "50px",
-                  }}
-                >
-                  閱讀
-                </th>
-                <th
-                  style={{
-                    width: "25%",
-                    border: "1.5px solid #000",
-                    textAlign: "center",
-                    lineHeight: "50px",
-                    overflow: "hidden",
-                  }}
-                >
-                  標題
-                </th>
-                <th
-                  style={{
-                    width: "37.5%",
-                    border: "1.5px solid #000",
-                    textAlign: "center",
-                    lineHeight: "50px",
-                    overflow: "hidden",
-                  }}
-                >
-                  摘要
-                </th>
-                <th
-                  style={{
-                    width: "2.5%",
-                    border: "1.5px solid #000",
-                    textAlign: "center",
-                    lineHeight: "50px",
-                  }}
-                >
-                  <img
-                    src="/icon/edit.png"
-                    alt="Edit"
-                    style={{ width: 25, height: 25 }}
-                  />
-                </th>
-                <th
-                  style={{
-                    width: "2.5%",
-                    border: "1.5px solid #000",
-                    textAlign: "center",
-                    lineHeight: "50px",
-                  }}
-                >
-                  <img
-                    src="/icon/writing.png"
-                    alt="Edit"
-                    style={{ width: 25, height: 25 }}
-                  />
-                </th>
-                <th
-                  style={{
-                    width: "2.5%",
-                    border: "1.5px solid #000",
-                    textAlign: "center",
-                    lineHeight: "50px",
-                  }}
-                >
-                  <img
-                    src="/icon/remove.png"
-                    alt="Edit"
-                    style={{ width: 25, height: 25 }}
-                  />
-                </th>
-              </tr>
-            );
-          })}
-        </thead>
+                  <th
+                    style={{
+                      width: "7.5%",
+                      border: "1.5px solid #000",
+                      textAlign: "center",
+                      lineHeight: "50px",
+                    }}
+                  >
+                    {e.writeTime}
+                  </th>
+                  <th
+                    style={{
+                      width: "2.5%",
+                      border: "1.5px solid #000",
+                      textAlign: "center",
+                      lineHeight: "50px",
+                    }}
+                  >
+                    {e.status === 1 ? "發布" : "待審"}
+                  </th>
+                  <th
+                    style={{
+                      width: "5%",
+                      border: "1.5px solid #000",
+                      textAlign: "center",
+                      lineHeight: "50px",
+                    }}
+                  >
+                    {e.category}
+                  </th>
+                  <th
+                    style={{
+                      width: "5%",
+                      border: "1.5px solid #000",
+                      textAlign: "center",
+                      lineHeight: "50px",
+                    }}
+                  >
+                    {e.author.name}
+                  </th>
+                  <th
+                    style={{
+                      width: "5%",
+                      border: "1.5px solid #000",
+                      textAlign: "center",
+                      lineHeight: "50px",
+                    }}
+                  >
+                    <img
+                      src={e.author.avatar}
+                      alt="Edit"
+                      style={{ width: 35, height: 35 }}
+                    />
+                  </th>
+                  <th
+                    style={{
+                      width: "2.5%",
+                      border: "1.5px solid #000",
+                      textAlign: "center",
+                      lineHeight: "50px",
+                    }}
+                  >
+                    {e.read}
+                  </th>
+                  <th
+                    style={{
+                      width: "25%",
+                      border: "1.5px solid #000",
+                      textAlign: "center",
+                      lineHeight: "50px",
+                      overflow: "scroll",
+                    }}
+                  >
+                    {e.title}
+                  </th>
+                  <th
+                    style={{
+                      width: "40%",
+                      border: "1.5px solid #000",
+                      textAlign: "center",
+                      lineHeight: "50px",
+                      overflow: "scroll",
+                    }}
+                  >
+                    {e.abstract}
+                  </th>
+                  <th
+                    style={{
+                      width: "2.5%",
+                      border: "1.5px solid #000",
+                      textAlign: "center",
+                      lineHeight: "50px",
+                    }}
+                  >
+                    <img
+                      src="/icon/edit.png"
+                      alt="Edit"
+                      style={{ width: 25, height: 25 }}
+                    />
+                  </th>
+                  <th
+                    style={{
+                      width: "2.5%",
+                      border: "1.5px solid #000",
+                      textAlign: "center",
+                      lineHeight: "50px",
+                    }}
+                  >
+                    <Link href={`/new-article/${e.id}`}>
+                      <img
+                        src="/icon/writing.png"
+                        alt="Edit"
+                        style={{ width: 25, height: 25 }}
+                      />
+                    </Link>
+                  </th>
+                  <th
+                    style={{
+                      width: "2.5%",
+                      border: "1.5px solid #000",
+                      textAlign: "center",
+                      lineHeight: "50px",
+                    }}
+                    onClick={deleteHandler.bind(null, e.id)}
+                  >
+                    <img
+                      src="/icon/remove.png"
+                      alt="Edit"
+                      style={{ width: 25, height: 25 }}
+                    />
+                  </th>
+                </tr>
+              );
+            })}
+          </thead>
+        </table>
       </div>
     </div>
   );
 };
 
 export default newMeetupPage;
+
+export async function getServerSideProps() {
+  const client = await MongoClient.connect(
+    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
+  );
+  const db = client.db();
+  const meetupsCollection = db.collection("articles");
+  let data = await meetupsCollection.find().toArray();
+  client.close();
+  return {
+    props: {
+      articles: data.map((item) => {
+        delete item._id;
+        return {
+          ...item,
+        };
+      }),
+    },
+  };
+}

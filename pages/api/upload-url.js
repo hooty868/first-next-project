@@ -13,8 +13,8 @@ export default async (req, res) => {
   // create S3 instance with credentials
   const s3 = new AWS.S3({
     endpoint: new AWS.Endpoint("sgp1.digitaloceanspaces.com"),
-    accessKeyId: process.env.accessKeyId,
-    secretAccessKey: process.env.secretAccessKey,
+    accessKeyId: "O535TGK6XCRMDV66PYW6",
+    secretAccessKey: "48cmmkmQYZo/4CeGkpX5DTO2sW/YrSe7MV2uEQQjBR0",
     region: "sgp1",
   });
 

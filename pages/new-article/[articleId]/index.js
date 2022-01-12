@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/router";
 import Unsplash, { toJson } from "unsplash-js";
 import { saveAs } from "file-saver";
+import { MongoClient } from "mongodb";
 
 const unsplash = new Unsplash({
   accessKey: "HEoGdIgyY17NjcjylHQMh-1Z7hmdTTV8lZ10r02hPcA",
@@ -46,38 +47,74 @@ const authors = [
   },
 ];
 
-const newMeetupPage = () => {
-  const [articleTitle, setArticleTitle] = useState("");
-  const [articleAbstract, setArticleAbstract] = useState("");
-  const [coverImage, setCoverImage] = useState("");
+const newMeetupPage = (props) => {
+  const modifiedArticle = props.articles[0];
+  const [articleTitle, setArticleTitle] = useState(modifiedArticle.title);
+  const [articleAbstract, setArticleAbstract] = useState(
+    modifiedArticle.abstract
+  );
+  const [coverImage, setCoverImage] = useState(
+    modifiedArticle.sectionOne.image
+  );
   const [author, setAuthor] = useState({
-    name: "Mandy",
-    avatar:
-      "https://images.unsplash.com/photo-1640087975859-f2e7a8d09634?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2338&q=80",
+    name: modifiedArticle.author.name,
+    avatar: modifiedArticle.author.avatar,
   });
-  const [secondImage, setSecondImage] = useState("");
-  const [thirdImage, setThirdImage] = useState("");
+  const [secondImage, setSecondImage] = useState(
+    modifiedArticle.sectionTwo.image
+  );
+  const [thirdImage, setThirdImage] = useState(
+    modifiedArticle.sectionThree.image
+  );
   const [searchImage, setSearchImage] = useState("");
   const [searchImageTwo, setSearchImageTwo] = useState("");
   const [searchImageThree, setSearchImageThree] = useState("");
   const [photos, setPhotos] = useState([]);
   const [photosSecond, setPhotosSecond] = useState([]);
   const [photosThird, setPhotosThird] = useState([]);
-  const [category, setCategory] = useState("");
-  const [secTitleOne, setSecTitleOne] = useState("");
-  const [sectionOne, setSectionOne] = useState("");
-  const [secTitleTwo, setSecTitleTwo] = useState("");
-  const [sectionTwo, setSectionTwo] = useState("");
-  const [secTitleThird, setSecTitleThird] = useState("");
-  const [sectionThird, setSectionThird] = useState("");
-  const [secTitleFour, setSecTitleFour] = useState("");
-  const [sectionFour, setSectionFour] = useState("");
-  const [secTitleFive, setSecTitleFive] = useState("");
-  const [sectionFive, setSectionFive] = useState("");
-  const [secTitleSix, setSecTitleSix] = useState("");
-  const [sectionSix, setSectionSix] = useState("");
-  const [secTitleSeven, setSecTitleSeven] = useState("");
-  const [sectionSeven, setSectionSeven] = useState("");
+  const [category, setCategory] = useState(modifiedArticle.category);
+  const [secTitleOne, setSecTitleOne] = useState(
+    modifiedArticle.sectionOne.title
+  );
+  const [sectionOne, setSectionOne] = useState(
+    modifiedArticle.sectionOne.content
+  );
+  const [secTitleTwo, setSecTitleTwo] = useState(
+    modifiedArticle.sectionTwo.title
+  );
+  const [sectionTwo, setSectionTwo] = useState(
+    modifiedArticle.sectionTwo.content
+  );
+  const [secTitleThird, setSecTitleThird] = useState(
+    modifiedArticle.sectionThree.title
+  );
+  const [sectionThird, setSectionThird] = useState(
+    modifiedArticle.sectionThree.content
+  );
+  const [secTitleFour, setSecTitleFour] = useState(
+    modifiedArticle.sectionFour.title
+  );
+  const [sectionFour, setSectionFour] = useState(
+    modifiedArticle.sectionFour.content
+  );
+  const [secTitleFive, setSecTitleFive] = useState(
+    modifiedArticle.sectionFive.title
+  );
+  const [sectionFive, setSectionFive] = useState(
+    modifiedArticle.sectionFive.content
+  );
+  const [secTitleSix, setSecTitleSix] = useState(
+    modifiedArticle.sectionSix.title
+  );
+  const [sectionSix, setSectionSix] = useState(
+    modifiedArticle.sectionSix.content
+  );
+  const [secTitleSeven, setSecTitleSeven] = useState(
+    modifiedArticle.sectionSeven.title
+  );
+  const [sectionSeven, setSectionSeven] = useState(
+    modifiedArticle.sectionSeven.content
+  );
   const [recommandOne, setRecommandOne] = useState({ id: "", title: "" });
   const [recommandTwo, setRecommandTwo] = useState({ id: "", title: "" });
   const [recommandThree, setRecommandThree] = useState({ id: "", title: "" });
@@ -102,21 +139,20 @@ const newMeetupPage = () => {
         }
       });
   };
-  const addMeetupHandler = async (status) => {
+  const addMeetupHandler = async () => {
     // if (!articleTitle || !coverImage) {
     //   alert("請確認作者有選取以及封面與標題是否填入");
     //   return;
     // }
-    const response = await fetch("/api/new-meetup", {
+    const response = await fetch("/api/editArticle", {
       method: "POST",
       body: JSON.stringify({
-        _id: uuidv4(),
-        id: uuidv4(),
-        category,
-        status: status,
-        writeTime: Math.floor(Date.now() / 1000),
-        author: author,
-        read: Math.round(Math.random() * 1000),
+        id: modifiedArticle.id,
+        category: modifiedArticle.category,
+        status: 1,
+        writeTime: modifiedArticle.writeTime,
+        author: modifiedArticle.author,
+        read: modifiedArticle.read,
         title: articleTitle,
         abstract: articleAbstract,
         sectionOne: {
@@ -246,7 +282,7 @@ const newMeetupPage = () => {
           新增文章
         </h1>
         <div
-          onClick={addMeetupHandler.bind(null, 1)}
+          onClick={addMeetupHandler}
           style={{
             color: "#000",
             fontSize: 16,
@@ -256,20 +292,7 @@ const newMeetupPage = () => {
             borderRadius: 5,
           }}
         >
-          直接提交文章
-        </div>
-        <div
-          onClick={addMeetupHandler.bind(null, 0)}
-          style={{
-            color: "#000",
-            fontSize: 16,
-            marginRight: 50,
-            border: "1px solid #999",
-            padding: 5,
-            borderRadius: 5,
-          }}
-        >
-          代審稿文章
+          提交文章
         </div>
       </div>
       <div
@@ -330,7 +353,7 @@ const newMeetupPage = () => {
                   const key = e.target.value;
                   setCategory(key);
                 }}
-                checked={category === "科技"}
+                checked={category === "like"}
               />
             </div>
             <div
@@ -352,7 +375,7 @@ const newMeetupPage = () => {
                   const key = e.target.value;
                   setCategory(key);
                 }}
-                checked={category === "工作"}
+                checked={category === "work"}
               />
             </div>
             <div
@@ -374,7 +397,7 @@ const newMeetupPage = () => {
                   const key = e.target.value;
                   setCategory(key);
                 }}
-                checked={category === "人生"}
+                checked={category === "life"}
               />
             </div>
             <div
@@ -397,7 +420,7 @@ const newMeetupPage = () => {
                   const key = e.target.value;
                   setCategory(key);
                 }}
-                checked={category === "娛樂"}
+                checked={category === "entertainment"}
               />
             </div>
             <div
@@ -420,7 +443,7 @@ const newMeetupPage = () => {
                   const key = e.target.value;
                   setCategory(key);
                 }}
-                checked={category === "知識"}
+                checked={category === "info"}
               />
             </div>
             <div
@@ -448,7 +471,7 @@ const newMeetupPage = () => {
                     };
                   });
                 }}
-                checked={category === "時事"}
+                checked={category.news}
               />
             </div>
           </div>
@@ -528,6 +551,17 @@ const newMeetupPage = () => {
                   alt="1"
                 />
               )}
+            </div>
+            <div style={{ display: "flex" }}>
+              <input
+                style={{ width: "50%", height: 30 }}
+                type="text"
+                required
+                id="title"
+                onChange={(e) => setCoverImage(e.target.value)}
+                value={coverImage}
+              />
+              <p>{`圖片新增網址:${coverImage}`}</p>
             </div>
             <div style={{ display: "flex" }}>
               {photos.map((item, i) => {
@@ -710,6 +744,17 @@ const newMeetupPage = () => {
               )}
             </div>
             <div style={{ display: "flex" }}>
+              <input
+                style={{ width: "50%", height: 30 }}
+                type="text"
+                required
+                id="title"
+                onChange={(e) => setSecondImage(e.target.value)}
+                value={secondImage}
+              />
+              <p>{`圖片新增網址:${secondImage}`}</p>
+            </div>
+            <div style={{ display: "flex" }}>
               {photosSecond.map((item) => {
                 const { urls, alt_description } = item;
                 return (
@@ -803,6 +848,17 @@ const newMeetupPage = () => {
                   alt="3"
                 />
               )}
+            </div>
+            <div style={{ display: "flex" }}>
+              <input
+                style={{ width: "50%", height: 30 }}
+                type="text"
+                required
+                id="title"
+                onChange={(e) => setThirdImage(e.target.value)}
+                value={thirdImage}
+              />
+              <p>{`圖片新增網址:${thirdImage}`}</p>
             </div>
             <div style={{ display: "flex" }}>
               {photosThird.map((item) => {
@@ -931,3 +987,24 @@ const newMeetupPage = () => {
 };
 
 export default newMeetupPage;
+
+export async function getServerSideProps(context) {
+  const articleId = context.params.articleId;
+  const client = await MongoClient.connect(
+    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
+  );
+  const db = client.db();
+  const meetupsCollection = db.collection("articles");
+  let data = await meetupsCollection.find({ id: articleId }).toArray();
+  client.close();
+  return {
+    props: {
+      articles: data.map((item) => {
+        delete item._id;
+        return {
+          ...item,
+        };
+      }),
+    },
+  };
+}

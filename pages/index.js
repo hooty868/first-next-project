@@ -40,11 +40,24 @@ const HomePage = (props) => {
 // }
 
 export async function getStaticProps() {
-  const client = await MongoClient.connect(process.env.MONGODB_URL);
-  const db = client.db();
+  let cachedDb = null;
+
+  async function connectToDatabase(uri) {
+    if (cachedDb) {
+      return cachedDb; // Prefer cached connection
+    }
+    const client = await MongoClient.connect(uri);
+    const db = client.db();
+    cachedDb = db; // Cache the database connection
+    return db;
+  }
+
+  const db = await connectToDatabase(
+    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
+  );
   const meetupsCollection = db.collection("meetups");
   const data = await meetupsCollection.find().toArray();
-  client.close();
+
   return {
     props: {
       meetups: data.map((item) => {
