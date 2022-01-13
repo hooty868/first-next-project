@@ -7,7 +7,7 @@ function MeetupItem(props) {
   const showDetailHandler = () => {
     router.push(`/${props.id}`);
   };
-  console.log(props);
+
   return (
     <li className={classes.item} onClick={showDetailHandler}>
       <Card>
