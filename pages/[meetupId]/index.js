@@ -35,7 +35,7 @@ const MeetUpDetails = ({
             description={meetupData.description}
           />
           <aside className={classes.containerAside}>
-            <NavList articleId={meetupData._id} />
+            {/* <NavList articleId={meetupData._id} />
             <div className={classes.cardContainer}>
               <div
                 style={{
@@ -60,7 +60,7 @@ const MeetUpDetails = ({
               {["1", "2", "3", "4", "5"].map((e) => {
                 return <RecommandCard key={e} imageSrc={meetupData.image} />;
               })}
-            </div>
+            </div> */}
           </aside>
         </div>
       </div>

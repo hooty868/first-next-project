@@ -14,7 +14,7 @@ const MeetUpDetail = (props) => {
           <p className={classes.readCount}>{` · 7個閱讀者`}</p>
         </div>
       </section>
-      <nav className={classes.navList}>
+      {/* <nav className={classes.navList}>
         <font>目錄</font>
         <li>
           <div>
@@ -82,24 +82,18 @@ const MeetUpDetail = (props) => {
           </div>
           <Link href={`./${props.articleId}#section-8`}>{"綜合所述"}</Link>
         </li>
-      </nav>
+      </nav> */}
       <div className={classes.description}>
-        <h2 id="section-1">
-          隨著入站營銷技術的日益流行，您會認為冷呼叫已死，對嗎？
-        </h2>
-        <p className={classes.abstract}>
-          嗯，82%
-          的買家在開始與銷售代表的對話後接受了與銷售代表的會面，這證明了這種舊的銷售技巧在
-          2021 年非常活躍。
-        </p>
-        <p className={classes.abstract}>
+        <h2 id="section-1">{props.title}</h2>
+        <p className={classes.abstract}>{props.description}</p>
+        {/* <p className={classes.abstract}>
           但是，要使此技術有效，您必須遵循正確的腳本——這要求您在潛在客戶掛斷電話之前打通電話的前五秒。這就是為什麼冷呼叫的初始線路至關重要的原因。下面是
           8
           條通向成功通話的開場白，但在我提到這些線路以及它們為何有效之前，您應該記住以下幾點：
           這不言而喻，但在下面幾行之前，您應該始終從基本的“嗨，約翰。我是 X
           公司的 Sam Smith。”
-        </p>
-        <p className={classes.abstract}>
+        </p> */}
+        {/* <p className={classes.abstract}>
           但是，要使此技術有效，您必須遵循正確的腳本——這要求您在潛在客戶掛斷電話之前打通電話的前五秒。這就是為什麼冷呼叫的初始線路至關重要的原因。下面是
           8
           條通向成功通話的開場白，但在我提到這些線路以及它們為何有效之前，您應該記住以下幾點：
@@ -109,8 +103,8 @@ const MeetUpDetail = (props) => {
           冷呼叫，顧名思義，就是打電話給尚未對您的服務表示興趣的潛在客戶：但這並不意味著您應該在沒有先驗知識的情況下撥打電話。在
           LinkedIn 上快速搜索有關您要致電的潛在客戶的信息會有所幫助。
           話雖如此，這裡有八條冷電話開通線路，可以讓您的潛在客戶傾聽。
-        </p>
-        <img
+        </p> */}
+        {/* <img
           src={"https://upload.cc/i1/2021/07/06/MUlrvn.png"}
           alt={"Get your FREE cold calling course"}
         />
@@ -176,9 +170,9 @@ const MeetUpDetail = (props) => {
           src={"https://upload.cc/i1/2021/07/06/MUlrvn.png"}
           alt={"Get your FREE cold calling course"}
         />
-        <h2 className={classes.related}>相關文章</h2>
+        <h2 className={classes.related}>相關文章</h2> */}
       </div>
-      <div className={classes.relativeList}>
+      {/* <div className={classes.relativeList}>
         {[1, 2, 3, 4, 5, 6].map((item) => {
           return (
             <li key={item.toString()} className={classes.item}>
@@ -205,7 +199,7 @@ const MeetUpDetail = (props) => {
             </li>
           );
         })}
-      </div>
+      </div> */}
     </article>
   );
 };
