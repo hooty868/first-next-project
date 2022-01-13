@@ -22,7 +22,7 @@ const HomePage = (props) => {
   );
 };
 
-export async function getServerSideProps() {
+export async function getstaticprops() {
   const uri = process.env.MONGODB_URL;
   const options = {
     useUnifiedTopology: true,
