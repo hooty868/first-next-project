@@ -6,10 +6,10 @@ const HomePage = (props) => {
   return (
     <>
       <Head>
-        <title>聚會預定</title>
+        <title>聚好玩</title>
         <meta
           name="description"
-          content="聚會預定網站集結論壇、展覽、講座、免費體驗及各式有趣活動資訊；無論您想要找什麼樣的活動，方便的您查詢喜愛的活動聚會預定都是您事半功倍的好幫手。"
+          content="聚好玩網站集結論壇、展覽、講座、免費體驗及各式有趣活動資訊；無論您想要找什麼樣的活動，方便的您查詢喜愛的活動聚好玩都是您事半功倍的好幫手。"
         ></meta>
       </Head>
       <article

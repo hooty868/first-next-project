@@ -6,7 +6,7 @@ function MainNavigation() {
     <header className={classes.header}>
       <div className={classes.container}>
         <h1 className={classes.logo}>
-          <Link href="/">聚會預定</Link>
+          <Link href="/">聚好玩</Link>
         </h1>
         <nav>
           <ul>
