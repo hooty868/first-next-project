@@ -22,45 +22,38 @@ const HomePage = (props) => {
   );
 };
 
-// export async function getServerSideProps() {
-//   const client = await MongoClient.connect(
-//    process.env.MONGODB_URL
-//   );
-//   const db = client.db();
-//   const meetupsCollection = db.collection("meetups");
-//   const data = await meetupsCollection.find().toArray();
-//   client.close();
-//   return {
-//     props: {
-//       meetups: data.map((item) => {
-//         return { ...item, _id: item._id.toString(), id: item._id.toString() };
-//       }),
-//     },
-//   };
-// }
-
 export async function getStaticProps() {
-  let cachedDb = null;
+  const uri =
+    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority";
+  const options = {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  };
 
-  async function connectToDatabase(uri) {
-    if (cachedDb) {
-      return cachedDb; // Prefer cached connection
+  let client;
+  let clientPromise;
+
+  if (process.env.NODE_ENV === "development") {
+    if (!global._mongoClientPromise) {
+      client = new MongoClient(uri, options);
+      global._mongoClientPromise = client.connect();
     }
-    const client = await MongoClient.connect(uri);
-    const db = client.db();
-    cachedDb = db; // Cache the database connection
-    return db;
+    clientPromise = global._mongoClientPromise;
+  } else {
+    client = new MongoClient(uri, options);
+    clientPromise = client.connect();
   }
 
-  const db = await connectToDatabase(
-    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
-  );
-  const meetupsCollection = db.collection("meetups");
-  const data = await meetupsCollection.find().toArray();
+  const clientClass = await clientPromise;
+
+  const db = clientClass.db();
+
+  let meetups = await db.collection("meetups").find({}).toArray();
+  let result = JSON.parse(JSON.stringify(meetups));
 
   return {
     props: {
-      meetups: data.map((item) => {
+      meetups: result.map((item) => {
         return { ...item, _id: item._id.toString(), id: item._id.toString() };
       }),
     },

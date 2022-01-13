@@ -5,6 +5,9 @@ import Head from "next/head";
 import NavList from "../../components/ui/NavList";
 import Link from "next/link";
 import RecommandCard from "../../components/ui/RecommandCard";
+
+let cachedDb = null;
+
 const MeetUpDetails = ({
   meetupData = {
     _id: "61b0e002066ad37feed85fc1",
@@ -65,63 +68,40 @@ const MeetUpDetails = ({
   );
 };
 
-// export async function getStaticPaths() {
-//   const client = await MongoClient.connect(
-//     "process.env.MONGODB_URL"
-//   );
-//   const db = client.db();
-//   const meetupsCollection = db.collection("meetups");
-//   const data = await meetupsCollection.find({}, { _id: 1 }).toArray();
-
-//   client.close();
-//   return {
-//     fallback: "blocking",
-//     paths: data.map((meet) => ({ params: { meetupId: meet._id.toString() } })),
-//   };
-// }
-
-// export async function getStaticProps(context) {
-//   const meetUpId = context.params.meetupId;
-//   const client = await MongoClient.connect(
-//     "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
-//   );
-//   const db = client.db();
-//   const meetupsCollection = db.collection("meetups");
-//   const data = await meetupsCollection.findOne({ _id: ObjectId(meetUpId) });
-
-//   client.close();
-//   return {
-//     props: {
-//       meetupData: {
-//         ...data,
-//         _id: data._id.toString(),
-//         id: data._id.toString(),
-//       },
-//     },
-//   };
-// }
-
 export async function getServerSideProps(context) {
-  let cachedDb = null;
   const { res } = context;
   res.setHeader("Cache-Control", "s-maxage=86400", "stale-while-revalidate");
   const meetUpId = context.params.meetupId;
+  const uri =
+    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority";
+  const options = {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  };
 
-  async function connectToDatabase(uri) {
-    if (cachedDb) {
-      return cachedDb; // Prefer cached connection
+  let client;
+  let clientPromise;
+
+  if (process.env.NODE_ENV === "development") {
+    if (!global._mongoClientPromise) {
+      client = new MongoClient(uri, options);
+      global._mongoClientPromise = client.connect();
     }
-    const client = await MongoClient.connect(uri);
-    const db = client.db();
-    cachedDb = db; // Cache the database connection
-    return db;
+    clientPromise = global._mongoClientPromise;
+  } else {
+    client = new MongoClient(uri, options);
+    clientPromise = client.connect();
   }
 
-  const db = await connectToDatabase(
-    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
-  );
-  const meetupsCollection = db.collection("meetups");
-  const data = await meetupsCollection.findOne({ _id: ObjectId(meetUpId) });
+  const clientClass = await clientPromise;
+
+  const db = clientClass.db();
+
+  let meetups = await db
+    .collection("meetups")
+    .findOne({ _id: ObjectId(meetUpId) });
+
+  let data = JSON.parse(JSON.stringify(meetups));
 
   return {
     props: {

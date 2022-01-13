@@ -6,18 +6,15 @@ function MainNavigation() {
     <header className={classes.header}>
       <div className={classes.container}>
         <h1 className={classes.logo}>
-          <Link href="/">解密之書</Link>
+          <Link href="/">聚會預定</Link>
         </h1>
         <nav>
           <ul>
             <li>
-              <Link href="/">科技</Link>
+              <Link href="/new-meetup/admin">管理活動</Link>
             </li>
             <li>
-              <Link href="/new-article">工作</Link>
-            </li>
-            <li>
-              <Link href="/">人生</Link>
+              <Link href="/new-meetup">新增活動</Link>
             </li>
           </ul>
         </nav>

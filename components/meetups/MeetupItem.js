@@ -7,6 +7,7 @@ function MeetupItem(props) {
   const showDetailHandler = () => {
     router.push(`/${props.id}`);
   };
+  console.log(props);
   return (
     <li className={classes.item} onClick={showDetailHandler}>
       <Card>
@@ -17,13 +18,8 @@ function MeetupItem(props) {
           <p>{props.address}</p>
           <h2>{props.title}</h2>
           <div className={classes.actions}>
-            <p>
-              At its best, sales is facilitation, not manipulation. Here, guided
-              by this philosophy, you'll learn 4 strategies to improve your
-              startup's revenue process. And bonus: I'll show you how Close can
-              help.
-            </p>
-            {/* <button onClick={showDetailHandler}>Show Details</button> */}
+            <p>{props.description.slice(0, 50)}</p>
+            <button onClick={showDetailHandler}>Show Details</button>
           </div>
           <div className={classes.footer}>
             <p>Marc Belgrave</p>
