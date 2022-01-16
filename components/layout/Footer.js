@@ -8,7 +8,7 @@ function MainFooter() {
       <div>
         <Link href="/">/ 服務條款</Link>
         <Link href="/">/ 隱私權政策</Link>
-        <Link href="/new-meetup/admin">/ 後台管理</Link>
+        <Link href="/new-article">/ 後台管理</Link>
       </div>
     </footer>
   );
