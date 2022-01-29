@@ -11,12 +11,11 @@ export default function Page(props) {
   return (
     <div className={styles.container}>
       <Head>
-        <title>解密之書</title>
+        <title>聚好玩</title>
         <meta
           name="description"
-          content="Your favorite digital media magazine, which contains the artificial intelligence of science and technology work and the happiest moments in life, to share and create with you"
+          content="聚好玩網站集結論壇、展覽、講座、免費體驗及各式有趣活動資訊；無論您想要找什麼樣的活動，方便的您查詢喜愛的活動聚好玩都是您事半功倍的好幫手。"
         ></meta>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <PageBody article={props.meetupData} />
       <div className={styles.relatedPostContainer}>
