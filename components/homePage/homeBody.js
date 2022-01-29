@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styles from "./homebody.module.css";
 import Moment from "moment";
+import { useRouter } from "next/router";
 
 const HomeBody = ({
   articles = [],
@@ -8,6 +9,7 @@ const HomeBody = ({
   latestArticles = [],
   TagArticles = [],
 }) => {
+  const router = useRouter();
   const asideArr = ["全部", "科技", "工作", "人生", "娛樂", "知識", "時事"];
   return (
     <div className={styles.container}>
@@ -15,14 +17,18 @@ const HomeBody = ({
         <div className={styles.sliderContainer}>
           {hotArticles.slice(0, 3).map((item) => {
             return (
-              <div key={item.id} className={styles.sliderPost}>
-                <Link href={`/article/${item.id}`}>
-                  <img
-                    className={styles.popularPostImage}
-                    src={item.sectionOne.image}
-                    alt="post-image"
-                  />
-                </Link>
+              <div
+                key={item.id}
+                className={styles.sliderPost}
+                onClick={() => {
+                  router.push(`/article/${item.id}`);
+                }}
+              >
+                <img
+                  className={styles.popularPostImage}
+                  src={item.sectionOne.image}
+                  alt="post-image"
+                />
                 <div className={styles.bodySliderPostMeta}>
                   <span>Mar 23, 2021</span>
                   <h4>{item.title}</h4>
@@ -139,7 +145,11 @@ const HomeBody = ({
                   <div key={item} className={styles.categoryContainer}>
                     <Link href="/">{item}</Link>
                     <span>
-                      {`(${TagArticles.filter((tag) => tag === item).length})`}
+                      {`(${
+                        item === "全部"
+                          ? TagArticles.length
+                          : TagArticles.filter((tag) => tag === item).length
+                      })`}
                     </span>
                   </div>
                 );

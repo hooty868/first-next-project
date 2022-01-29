@@ -5,6 +5,7 @@ import Link from "next/link";
 
 const NewMeetupPage = (props) => {
   const [pageItem, setPageItem] = useState(0);
+  const [isClick, setIsClick] = useState(false);
   const router = useRouter();
   const backRouter = () => {
     router.push(`/new-article/edit`);
@@ -88,9 +89,14 @@ const NewMeetupPage = (props) => {
             color: "#000",
             borderRadius: 10,
             border: "1px solid #000",
+            opacity: isClick ? 0.3 : 1,
+          }}
+          onClick={(e) => {
+            setIsClick(true);
+            router.push(`/article`);
           }}
         >
-          分析
+          首頁
         </div>
         <div
           onClick={backRouter}
@@ -381,7 +387,7 @@ const NewMeetupPage = (props) => {
                     }}
                   >
                     <a
-                      href={`https://www.gmbook.tw/${e.id}`}
+                      href={`/article/${e.id}`}
                       target={"_blank"}
                       rel={"noreferrer"}
                     >

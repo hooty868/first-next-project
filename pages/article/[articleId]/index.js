@@ -3,6 +3,7 @@ import styles from "../../../styles/Page.module.css";
 import PageBody from "../../../components/page/PageBody";
 import Link from "next/link";
 import { MongoClient } from "mongodb";
+import Moment from "moment";
 
 export default function Page(props) {
   const arr = [1, 2, 3, 4];
@@ -38,7 +39,7 @@ export default function Page(props) {
                   <div className={styles.postMeta}>
                     <p>{`BY: EWRIN JONSON`}</p>
                     <span />
-                    <p>{`MAR 23, 2021`}</p>
+                    <p>{Moment(item.writeTime).format("MMM DD, YYYY")}</p>
                     <span />
                     <p>{` 觀看數2031`}</p>
                   </div>
@@ -62,9 +63,10 @@ export default function Page(props) {
 
 export async function getServerSideProps(context) {
   const { res } = context;
-  res.setHeader("Cache-Control", "s-maxage=86400", "stale-while-revalidate");
+  res.setHeader("Cache-Control", "s-maxage=18000", "stale-while-revalidate");
   const articleId = context.params.articleId;
-  const uri = process.env.MONGODB_URL;
+  const uri =
+    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority";
   const options = {
     useUnifiedTopology: true,
     useNewUrlParser: true,
