@@ -149,10 +149,10 @@ const NewMeetupPage = (props) => {
       method: "POST",
       body: JSON.stringify({
         id: modifiedArticle.id,
-        category: modifiedArticle.category,
+        category: category,
         status: 1,
         writeTime: modifiedArticle.writeTime,
-        author: modifiedArticle.author,
+        author: author,
         read: read,
         title: articleTitle,
         abstract: articleAbstract,
@@ -354,7 +354,7 @@ const NewMeetupPage = (props) => {
                   const key = e.target.value;
                   setCategory(key);
                 }}
-                checked={category === "like"}
+                checked={category === "科技"}
               />
             </div>
             <div
@@ -376,7 +376,7 @@ const NewMeetupPage = (props) => {
                   const key = e.target.value;
                   setCategory(key);
                 }}
-                checked={category === "work"}
+                checked={category === "工作"}
               />
             </div>
             <div
@@ -398,7 +398,7 @@ const NewMeetupPage = (props) => {
                   const key = e.target.value;
                   setCategory(key);
                 }}
-                checked={category === "life"}
+                checked={category === "人生"}
               />
             </div>
             <div
@@ -421,7 +421,7 @@ const NewMeetupPage = (props) => {
                   const key = e.target.value;
                   setCategory(key);
                 }}
-                checked={category === "entertainment"}
+                checked={category === "娛樂"}
               />
             </div>
             <div
@@ -444,7 +444,7 @@ const NewMeetupPage = (props) => {
                   const key = e.target.value;
                   setCategory(key);
                 }}
-                checked={category === "info"}
+                checked={category === "知識"}
               />
             </div>
             <div
@@ -465,14 +465,9 @@ const NewMeetupPage = (props) => {
                 style={{ marginTop: 10 }}
                 onChange={(e) => {
                   const key = e.target.value;
-                  setCategory((prev) => {
-                    return {
-                      ...prev,
-                      [key]: !prev[key],
-                    };
-                  });
+                  setCategory(key);
                 }}
-                checked={category.news}
+                checked={category === "時事"}
               />
             </div>
           </div>
@@ -1010,13 +1005,32 @@ export default NewMeetupPage;
 
 export async function getServerSideProps(context) {
   const articleId = context.params.articleId;
-  const client = await MongoClient.connect(
-    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
-  );
-  const db = client.db();
-  const meetupsCollection = db.collection("articles");
-  let data = await meetupsCollection.find({ id: articleId }).toArray();
-  client.close();
+  const uri =
+    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority";
+  const options = {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  };
+
+  let client;
+  let clientPromise;
+
+  if (process.env.NODE_ENV === "development") {
+    if (!global._mongoClientPromise) {
+      client = new MongoClient(uri, options);
+      global._mongoClientPromise = client.connect();
+    }
+    clientPromise = global._mongoClientPromise;
+  } else {
+    client = new MongoClient(uri, options);
+    clientPromise = client.connect();
+  }
+
+  const clientClass = await clientPromise;
+
+  const db = clientClass.db();
+
+  let data = await db.collection("articles").find({ id: articleId }).toArray();
   return {
     props: {
       articles: data.map((item) => {

@@ -380,15 +380,17 @@ const NewMeetupPage = (props) => {
                       lineHeight: "50px",
                     }}
                   >
-                    <Link href={`/${e.id}`}>
-                      <a>
-                        <img
-                          src="/icon/edit.png"
-                          alt="Edit"
-                          style={{ width: 25, height: 25 }}
-                        />
-                      </a>
-                    </Link>
+                    <a
+                      href={`https://www.gmbook.tw/${e.id}`}
+                      target={"_blank"}
+                      rel={"noreferrer"}
+                    >
+                      <img
+                        src="/icon/edit.png"
+                        alt="Edit"
+                        style={{ width: 25, height: 25 }}
+                      />
+                    </a>
                   </th>
                   <th
                     style={{
@@ -436,13 +438,32 @@ const NewMeetupPage = (props) => {
 export default NewMeetupPage;
 
 export async function getStaticProps() {
-  const client = await MongoClient.connect(
-    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority"
-  );
-  const db = client.db();
-  const meetupsCollection = db.collection("articles");
-  let data = await meetupsCollection.find().toArray();
-  client.close();
+  const uri =
+    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority";
+  const options = {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  };
+
+  let client;
+  let clientPromise;
+
+  if (process.env.NODE_ENV === "development") {
+    if (!global._mongoClientPromise) {
+      client = new MongoClient(uri, options);
+      global._mongoClientPromise = client.connect();
+    }
+    clientPromise = global._mongoClientPromise;
+  } else {
+    client = new MongoClient(uri, options);
+    clientPromise = client.connect();
+  }
+
+  const clientClass = await clientPromise;
+
+  const db = clientClass.db();
+
+  let data = await db.collection("articles").find({}).toArray();
   return {
     props: {
       articles: data.map((item) => {

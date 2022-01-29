@@ -18,7 +18,11 @@ function MeetupItem(props) {
           <p>{props.address}</p>
           <h2>{props.title}</h2>
           <div className={classes.actions}>
-            <p>{props.description.slice(0, 50)}</p>
+            <p>
+              {!!props.description
+                ? props.description.slice(0, 50)
+                : props.description}
+            </p>
             <button onClick={showDetailHandler}>Show Details</button>
           </div>
           <div className={classes.footer}>

@@ -114,7 +114,7 @@ const NewMeetupPage = () => {
         id: uuidv4(),
         category,
         status: status,
-        writeTime: Math.floor(Date.now() / 1000),
+        writeTime: Math.floor(Date.now()),
         author: author,
         read: Math.round(Math.random() * 1000),
         title: articleTitle,
