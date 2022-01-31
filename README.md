@@ -1,13 +1,13 @@
-# profile_page
+# 聚好玩
 
-#### 個人資料頁面，主要引入 Materialize-css 框架，以及 animated.js 動畫設計
+#### 使用 Next.js(React)打造全端 WEB 應用程式部署在 Vercel 搭配 mongodb 做資料庫存儲。可以讓使用者自由輸入自己喜愛的活動詳細資訊與圖片，並可隨時後台管理自己的活動並作儲存修改。
 
 ![首頁](https://upload.cc/i1/2022/01/31/av3Xz7.png)
 
 ## 引入套件
 
 [![Next.js](https://img.shields.io/badge/Next.js-12-brightgreen)](https://nextjs.org/)
-[![materializeCSS version](https://img.shields.io/badge/MaterializeCSS-1.0.0-red)](https://github.com/Dogfalo/materialize)
+[![AWS-SDK](https://img.shields.io/badge/AWS--SDK-3.x-green)](https://aws.amazon.com/tw/sdk-for-javascript/)
 
 ## 主要呈現內容分類
 
