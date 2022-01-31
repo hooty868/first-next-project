@@ -57,7 +57,7 @@ const newMeetupPage = (props) => {
 
 export default newMeetupPage;
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const uri =
     "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority";
   const options = {
