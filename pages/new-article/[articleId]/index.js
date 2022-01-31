@@ -1005,8 +1005,7 @@ export default NewMeetupPage;
 
 export async function getServerSideProps(context) {
   const articleId = context.params.articleId;
-  const uri =
-    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority";
+  const uri = process.env.MONGODB_URL;
   const options = {
     useUnifiedTopology: true,
     useNewUrlParser: true,
