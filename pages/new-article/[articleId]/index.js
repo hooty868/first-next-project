@@ -153,7 +153,7 @@ const NewMeetupPage = (props) => {
         status: 1,
         writeTime: modifiedArticle.writeTime,
         author: author,
-        read: read,
+        read: 0,
         title: articleTitle,
         abstract: articleAbstract,
         sectionOne: {

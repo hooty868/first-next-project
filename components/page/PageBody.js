@@ -1,11 +1,11 @@
 import Link from "next/link";
 import styles from "./pagebody.module.css";
 import Image from "next/image";
+import Moment from "moment";
 
-const PageBody = ({ article }) => {
+const PageBody = ({ article, hotArticles = [], latestArticles = [] }) => {
   const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const asideArr = ["全部", "科技", "工作", "新聞", "人生"];
-
   return (
     <div className={styles.container}>
       <section className={styles.slider}>
@@ -181,17 +181,17 @@ const PageBody = ({ article }) => {
           <div className={styles.rightContainer}>
             <aside className={styles.popularPost}>
               <h4 className={styles.popularPostTitle}>熱門貼文</h4>
-              {asideArr.slice(0, 3).map((item) => {
+              {hotArticles.slice(0, 3).map((item) => {
                 return (
-                  <div key={item} className={styles.popularPostCard}>
+                  <div key={item.id} className={styles.popularPostCard}>
                     <img
                       alt="description for image"
                       className={styles.popularPostImage}
-                      src="https://upload.cc/i1/2021/05/02/iWRNDl.png"
+                      src={item.sectionOne.image}
                     />
                     <div className={styles.popularPostTag}>
-                      <span>Mar 23, 2021</span>
-                      <h4>而是為了讓您可以感知所有這些錯誤是從哪裡誕生的</h4>
+                      <p>{Moment(item.writeTime).format("MMM DD, YYYY")}</p>
+                      <h4>{item.title}</h4>
                     </div>
                   </div>
                 );
@@ -199,16 +199,16 @@ const PageBody = ({ article }) => {
             </aside>
             <aside className={styles.popularPost}>
               <h4 className={styles.popularPostTitle}>最近貼文</h4>
-              {asideArr.map((item) => {
+              {latestArticles.map((item) => {
                 return (
-                  <div key={item} className={styles.latestPost}>
+                  <div key={item.id} className={styles.latestPost}>
                     <img
                       alt="description for image"
-                      src="https://upload.cc/i1/2021/05/02/iWRNDl.png"
+                      src={item.sectionOne.image}
                     />
                     <div className={styles.latestPostTag}>
-                      <h4>而是為了讓您可以感知所有這些錯誤是從哪裡誕生的</h4>
-                      <span>Mar 23, 2021</span>
+                      <h4>{item.title}</h4>
+                      <p>{Moment(item.writeTime).format("MMM DD, YYYY")}</p>
                     </div>
                   </div>
                 );

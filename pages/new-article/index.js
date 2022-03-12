@@ -16,10 +16,10 @@ const NewMeetupPage = (props) => {
   const minusPaginatorHandler = () => {
     setPageItem((v) => v - 10);
   };
-  const deleteHandler = async (id) => {
+  const deleteHandler = async (id, category) => {
     const response = await fetch("/api/deleteArticle", {
       method: "DELETE",
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ id, category }),
       headers: { "Content-Type": "application/json" },
     });
     const data = response.json({ message: "delete article" });
@@ -423,7 +423,7 @@ const NewMeetupPage = (props) => {
                       textAlign: "center",
                       lineHeight: "50px",
                     }}
-                    onClick={deleteHandler.bind(null, e.id)}
+                    onClick={deleteHandler.bind(null, e.id, e.category)}
                   >
                     <img
                       src="/icon/remove.png"
@@ -444,7 +444,8 @@ const NewMeetupPage = (props) => {
 export default NewMeetupPage;
 
 export async function getServerSideProps() {
-  const uri = process.env.MONGODB_URL;
+  const uri =
+    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority";
   const options = {
     useUnifiedTopology: true,
     useNewUrlParser: true,

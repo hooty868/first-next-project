@@ -16,6 +16,7 @@
     "file-saver": "^2.0.5",
     "formidable-serverless": "^1.1.1",
     "fs": "*",
+    "ioredis": "^4.28.4",
     "js-file-download": "^0.4.12",
     "mongodb": "^4.2.1",
     "mongoose": "^6.1.6",

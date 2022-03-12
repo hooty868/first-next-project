@@ -103,20 +103,17 @@ const NewMeetupPage = () => {
       });
   };
   const addMeetupHandler = async (status) => {
-    // if (!articleTitle || !coverImage) {
-    //   alert("請確認作者有選取以及封面與標題是否填入");
-    //   return;
-    // }
+    const articleUUID = uuidv4();
     const response = await fetch("/api/new-article", {
       method: "POST",
       body: JSON.stringify({
-        _id: uuidv4(),
-        id: uuidv4(),
+        _id: articleUUID,
+        id: articleUUID,
         category,
         status: status,
         writeTime: Math.floor(Date.now()),
         author: author,
-        read: Math.round(Math.random() * 1000),
+        read: 0,
         title: articleTitle,
         abstract: articleAbstract,
         sectionOne: {
@@ -157,6 +154,7 @@ const NewMeetupPage = () => {
       headers: { "Content-Type": "application/json" },
     });
     const data = response.json();
+
     router.push(`/new-article`);
   };
 
