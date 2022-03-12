@@ -30,7 +30,7 @@ export default async (req, res) => {
       // params
       Bucket: "aticle-image-gmbook",
       ACL: "public-read",
-      Key: uuidv4(),
+      Key: new Date().getTime()+new Date().toLocaleString(),
       Body: file,
       ContentType: "image/jpeg",
     }).send((err, data) => {
