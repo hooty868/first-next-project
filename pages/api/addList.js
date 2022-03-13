@@ -1,6 +1,13 @@
 import { MongoClient } from "mongodb";
 
 async function handler(req, res) {
+  const uri =
+    "mongodb+srv://root:Ohp554tts@cluster0.y8lxx.mongodb.net/meetups?retryWrites=true&w=majority";
+  const options = {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  };
+
   let client;
   let clientPromise;
   const Paginator = Object.keys(req.query)[0]
