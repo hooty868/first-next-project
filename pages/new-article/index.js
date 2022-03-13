@@ -1,20 +1,26 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useRouter } from "next/router";
 import { MongoClient } from "mongodb";
 import Link from "next/link";
+import Modal from 'react-modal';
+import { configConsumerProps } from "antd/lib/config-provider";
 
 const NewMeetupPage = (props) => {
-  const [pageItem, setPageItem] = useState(0);
+  let subtitle;
+  const [pageItem, setPageItem] = useState(5);
   const [isClick, setIsClick] = useState(false);
+  const [modalIsOpen,setModalIsOpen] = useState(false);
+  const [deletePost, setDeletePost] = useState({id:'',category:''});
+  const [newList,setNewList] = useState([])
   const router = useRouter();
   const backRouter = () => {
     router.push(`/new-article/edit`);
   };
   const addPaginatorHandler = () => {
-    setPageItem((v) => v + 10);
+    setPageItem((v) => v + 5);
   };
   const minusPaginatorHandler = () => {
-    setPageItem((v) => v - 10);
+    setPageItem((v) => v - 5);
   };
   const deleteHandler = async (id, category) => {
     const response = await fetch("/api/deleteArticle", {
@@ -25,8 +31,16 @@ const NewMeetupPage = (props) => {
     const data = response.json({ message: "delete article" });
     router.push(`/new-article`);
   };
-
+  useEffect(()=>{
+    setNewList(props.articles)
+  },[])
+  useEffect(()=>{
+     fetch(`/api/addList?${pageItem}`)
+    .then((res) => res.json())
+    .then(newData =>setNewList(newData.data));
+  },[pageItem])
   return (
+    <>
     <div
       style={{
         height: "100%",
@@ -47,7 +61,9 @@ const NewMeetupPage = (props) => {
       >
         {pageItem !== 0 && (
           <div
-            onClick={minusPaginatorHandler}
+            onClick={() => {
+              minusPaginatorHandler()
+            }}
             style={{
               width: "100%",
               height: 50,
@@ -115,7 +131,9 @@ const NewMeetupPage = (props) => {
           插入新文章
         </div>
         <div
-          onClick={addPaginatorHandler}
+          onClick={() => {
+            addPaginatorHandler()
+          }}
           style={{
             width: "100%",
             height: 50,
@@ -281,7 +299,7 @@ const NewMeetupPage = (props) => {
                 刪除
               </th>
             </tr>
-            {props.articles.map((e) => {
+            {newList.map((e) => {
               return (
                 <tr
                   key={e.id.toString()}
@@ -328,6 +346,7 @@ const NewMeetupPage = (props) => {
                       border: "1.5px solid #000",
                       textAlign: "center",
                       lineHeight: "50px",
+                      overflow:'scroll'
                     }}
                   >
                     {e.author.name}
@@ -423,7 +442,10 @@ const NewMeetupPage = (props) => {
                       textAlign: "center",
                       lineHeight: "50px",
                     }}
-                    onClick={deleteHandler.bind(null, e.id, e.category)}
+                    onClick={() => {
+                      setModalIsOpen(true)
+                      setDeletePost({id:e.id, category:e.category})
+                    }}
                   >
                     <img
                       src="/icon/remove.png"
@@ -438,6 +460,32 @@ const NewMeetupPage = (props) => {
         </table>
       </div>
     </div>
+    <Modal
+        isOpen={modalIsOpen}
+        // onAfterOpen={afterOpenModal}
+        // onRequestClose={closeModal}
+        style={{
+          content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+          },
+        }}
+        contentLabel="Example Modal"
+      >
+        <div style={{ width: 100, height:100}}>
+          <h2 ref={(_subtitle) => (subtitle = _subtitle)} style={{marginBottom:40}}>確定刪除嗎？</h2>
+          <button onClick={() => setModalIsOpen(false)} style={{marginRight:10}}>關閉</button>
+          <button onClick={() => {
+            deleteHandler(deletePost.id, deletePost.category)
+            // setModalIsOpen(false)
+            }}>確定</button>
+        </div>
+      </Modal>
+      </>
   );
 };
 
@@ -469,7 +517,7 @@ export async function getServerSideProps() {
 
   const db = clientClass.db();
 
-  let data = await db.collection("articles").find({}).toArray();
+  let data = await db.collection("articles").find({writeTime:{$gt: new Date().getTime()-(24*3600*1000)}}).toArray();
   return {
     props: {
       articles: data.map((item) => {

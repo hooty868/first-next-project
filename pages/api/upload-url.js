@@ -39,6 +39,7 @@ export default async (req, res) => {
         return res.status(500);
       }
       if (data) {
+        console.log('success upload',data)
         return res.json({
           url: data.Location,
         });
